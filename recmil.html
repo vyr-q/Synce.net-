@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$ynce</title>
+    <style>
+
+      .text-box.fullscreen{
+    position: fixed !important;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+
+    z-index: 999999;
+
+    margin: 0;
+    padding: 45px;
+
+    border-radius: 0;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(255,0,0,0.08),
+            transparent 35%
+        ),
+        rgba(5,5,5,0.985);
+
+    border: none;
+
+    overflow-y: auto;
+    box-sizing: border-box;
+
+    color: #ffdddd;
+
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+        inset 0 0 80px rgba(255,255,255,0.03),
+        inset 0 0 160px rgba(255,0,0,0.05),
+        0 0 80px rgba(255,0,0,0.12);
+
+    animation: fullscreenFade .25s ease;
+}
+
+/* Smooth entrance */
+@keyframes fullscreenFade{
+    from{
+        opacity:0;
+        transform:scale(0.985);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background: #0a0a0a;
+        color: white;
+        font-family: 'Courier New', monospace;
+        overflow: hidden;
+        height: 100vh;
+        position: relative;
+    }
+
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        box-shadow: inset 0 0 80px rgba(255,255,255,0.15),
+                    inset 0 0 160px rgba(255,255,255,0.08);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    canvas {
+        position: absolute;
+        top: 0; left: 0;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .content {
+        position: relative;
+        z-index: 3;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-top: 60px;
+    }
+
+    h1 {
+        font-size: 62px;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 8px;
+        text-shadow: 0 0 20px #ffffff,
+                     0 0 40px #ffffff,
+                     0 0 60px #ff3333;
+    }
+
+    /* IMPROVED TEXT BOX - Better for ASCII & pasted text */
+  .text-box {
+    width: fit-content;          /* expands with content */
+    max-width: 95vw;             /* prevents going off screen */
+    min-width: 780px;
+
+    max-height: 55vh;
+
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #ff3333;
+
+    box-shadow:
+        0 0 30px #ff3333,
+        0 0 60px rgba(255, 50, 50, 0.4);
+
+    padding: 25px;
+
+    overflow: auto;              /* horizontal + vertical scroll */
+
+    text-align: left;
+    line-height: 1.55;
+    font-size: 15px;
+    color: #ffdddd;
+
+    white-space: pre;            /* keeps ASCII formatting */
+    word-break: normal;          /* stops breaking text */
+
+    font-family: 'Courier New', monospace;
+
+    scrollbar-width: thin;
+    scrollbar-color: #ff4444 #222;
+}
+.text-box::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+</style>
+	
+</head>
+<body>
+
+    <!-- Red Falling DOS Snow -->
+    <canvas id="snowCanvas"></canvas>
+
+    <div class="content">
+        <h1>$YNCE</h1>
+
+        <audio id="bgMusic" autoplay loop>
+        <source src="https://codehs.com/uploads/8ab5d8b93d1aff6eb94647e795e224ec" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+
+        <!-- SCROLLABLE TEXT BOX -->
+        <div class="text-box">
+            <h2>rec mils dox</h2>
+            <button id="fullscreenBtn">⛶ Fullscreen</button>
+          
+            <p>
+              ⣿⣿⣿⣿⣿⣷⣿⣿⣿⡅⡹⢿⠆⠙⠋⠉⠻⠿⣿⣿⣿⣿⣿⣿⣮⠻⣦⡙⢷⡑⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣌⠡⠌⠂⣙⠻⣛⠻⠷⠐⠈⠛⢱⣮⣷⣽⣿
+⣿⣿⣿⣿⡇⢿⢹⣿⣶⠐⠁⠀⣀⣠⣤⠄⠀⠀⠈⠙⠻⣿⣿⣿⣦⣵⣌⠻⣷⢝⠦⠚⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢟⣻⣿⣊⡃⠀⣙⠿⣿⣿⣿⣎⢮⡀⢮⣽⣿⣿
+⢿⣿⣿⣿⣧⡸⡎⡛⡩⠖⠀⣴⣿⣿⣿⠀⠀⠀⠀⠸⠇⠀⠙⢿⣿⣿⣿⣷⣌⢷⣑⢷⣄⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣫⠶⠛⠉⠀⠁⠀⠈⠈⠀⠠⠜⠻⣿⣆⢿⣼⣿⣿⣿  $ynce
+⢐⣿⣿⣿⣿⣧⢧⣧⢻⣦⢀⣹⣿⣿⣿⣇⠀⠄⠀⠀⠀⡀⠀⠈⢻⣿⣿⣿⣿⣷⣝⢦⡹⠷⡙⢿⣿⣿⣿⣿⣿⣿⣿⣿⠈⠁⠀⠀⠀⠁⠀⠀⠀⠱⣶⣄⡀⠀⠈⠛⠜⣿⣿⣿⣿
+⠀⠊⢫⣿⣏⣿⡌⣼⣄⢫⡌⣿⣿⣿⣿⣿⣦⡈⠲⣄⣤⣤⡡⢀⣠⣿⣿⣿⣿⣿⣿⣷⣼⣍⢬⣦⡙⣿⣿⣿⣿⣿⣯⢁⡄⠀⡀⡀⠀⠄⢈⣠⢪⠀⣿⣿⣿⣦⠀⢉⢂⠹⡿⣿⣿
+⠀⠀⠄⢹⢃⢻⣟⠙⣿⣦⠱⢻⣿⣿⣿⣿⣿⣿⣷⣬⣍⣭⣥⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⡙⢿⣼⡿⣿⣿⣿⣿⣿⣷⣄⠘⣱⢦⣤⡴⡿⢈⣼⣿⣿⣿⣇⣴⣶⣮⣅⢻⣿⡏
+⠀⠀⠈⠹⣇⢡⢿⡆⠻⣿⣷⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣍⡻⣿⣟⣻⣿⣿⣿⣿⣷⣦⣥⣬⣤⣴⣾⣿⣿⣿⣿⣷⣿⣿⣿⣿⣷⡜⠃
+⠀⠀⠀⢀⣘⠈⢂⠃⣧⡹⣿⣷⡄⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⣅⡙⢿⣟⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⡕⠂
+⠀⠀⠀⠀⠀⠀⠛⢷⣜⢷⡌⠻⣿⣿⣦⣝⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣹⣷⣦⣹⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠉⠃⠀
+
+                                          Rec Miitary Members 
+                                             By COCO
+
+▀███▀▀▀██▄                            ▀████▄     ▄███▀                   
+  ██   ▀██▄                             ████    ████                     
+  ██   ▄██  ▄█▀██▄ ▀███  ▀███  █▀▀▀███  █ ██   ▄█ ██ ▀███  ▀███  █▀▀▀███ 
+  ███████  ██   ██   ██    ██  ▀  ███   █  ██  █▀ ██   ██    ██  ▀  ███     
+  ██  ██▄   ▄█████   ██    ██    ███    █  ██▄█▀  ██   ██    ██    ███      
+  ██   ▀██▄██   ██   ██    ██   ███  ▄  █  ▀██▀   ██   ██    ██   ███  ▄    
+▄████▄ ▄███▄████▀██▄ ▀████▀███▄███████▄███▄ ▀▀  ▄████▄ ▀████▀███▄███████ 
+                                                                                                                                                
+Proof: youtube.com/watch?v=9RTeBH0fj3Y&t=32s
+       youtube.com/watch?v=JJbeYItt5N0
+       youtube.com/watch?v=8HrsduA0Vzo
+       youtube.com/watch?v=VDQP_wp9nH4
+╠══╦══════════════╦══╦═══════════════════════════════════════════════════════════════════╣
+║░░║  Information ║ +║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ $ynce   ║
+╠══╩══════════════╩══╩═══════════════════════════════════════════════════════════════════╣
+  [A] Ip: 37.136.130.215 
+» [A] Username: Rauzmuz /
+» [A] Main Email: nixonedwardsdv@gmail.com /
+» [A] Alt Emails: nixonewardsdv@gmail.com • rauzmuz@gmail.com • sogustavo@hotmail.com • Kazuhikon4gata@gmail.com  
+gabrielapereiraoliveira@gmail.com tottilehtola@gmail.com /
+» [A] <3 [] Roblox • Rec Room • Discord
+» [A] Status: Active \
+» [A] Relevancy: Primary
+
+» [B] Real Name: Rasmus Helin /
+» [B] PayPal: rauzmuz (Rasmus Helin) /
+» [B] Chess.com: Rauzmuz (Rasmus helin) /
+» [B] <3 [] Steam • Twitch • TikTok • YouTube
+» [B] Status: Active \
+» [B] Relevancy: Main Identity
+
+» [C] Roblox: rauzmuz (ID 508069724) /
+» [C] Creation Date: 2018-02-03 /
+» [C] Old Xbox: ruzmuz /
+» [C] <3 [] Rec Room: RauzMuz (Founder of United Empire)
+» [C] Status: Old but linked \
+» [C] Relevancy: Gaming Corew w
+
+» [E] Passwords Leaked: RAUZMUZ0 • RAUZMUZ1 • RAUZMUZ2 • RAUZMUZ69 RAUZMUZ1 /
+» [E] Others: rauzmuz02 • rauzmuz028 • rauzmuz1 /
+» [E] <3 [] Roblox • Google • Spotify • Discord • Messenger
+» [E] Status: Heavily Compromised \
+» [E] Relevancy: Critical
+
+» [F] Trello: ruzmuz / rauzmuz@gmail.com /
+» [F] Steam: RauzMuz /
+» [F] Twitch: rauzmuz / TikTok: @rauzmuz / YouTube: Rauzmuz /
+» [F] Status: Active \
+» [F] Relevancy: Socials
+
+
+Discord user: rauzmuz1
+Discord id  : 386150150608781315
+Connected account: https://www.roblox.com/users/358306567/profile
+
+
+----------------------------------------------------------
+Links
+
+All Links for Rauzmuz:
+Gaming
+• Roblox → oblox.com/users/358306567/profile
+• Rec Room → https://rec.net/user/RauzMuz
+
+Streaming & Social
+• Twitch → https://www.twitch.tv/rauzmuz
+• YouTube → https://youtube.com/channel/UCFsLZSs0gMgo6r6kizu6RRA
+
+Other Platforms
+• Steam → https://steamcommunity.com/id/rauzmuz/
+• Chess.com → https://www.chess.com/member/Rauzmuz
+═════════════════════════════════════════════════════════════
+                                                            ▄▄                  
+      ██                                         ▀███▀▀▀███ ██                  
+     ▄██▄                                          ██    ▀█                     
+    ▄█▀██▄   ▀████████▄█████▄  ▄█▀██▄ ▀████████▄   ██   █ ▀███ ▀███▄███  ▄▄█▀██ 
+   ▄█  ▀██     ██    ██    ██ ██   ██   ██    ██   ██▀▀██   ██   ██▀ ▀▀ ▄█▀   ██
+   ████████    ██    ██    ██  ▄█████   ██    ██   ██   █   ██   ██     ██▀▀▀▀▀▀
+  █▀      ██   ██    ██    ██ ██   ██   ██    ██   ██       ██   ██     ██▄    ▄
+▄███▄   ▄████▄████  ████  ████▄████▀██▄████  ████▄████▄   ▄████▄████▄    ▀█████▀
+                                                                                                                                                               
+[A] Username: amanfire99
+» [A] <3 [] Discord • Roblox • Telegram • Snapchat • Twitch
+» [A] Status: Active \
+» [A] Relevancy: Primary
+» [B] Real Name: Aman Kumar
+» [B] <3 [] Telegram (Display Name)
+» [B] Status: Confirmed \
+» [B] Relevancy: Main Identity
+» [C] Roblox: Amanfire99 (ID 1868845987)
+» [C] Creation Date: 2020-09-05
+» [C] Friends: 5
+» [C] <3 [] Discord
+» [C] Status: Inactive (offline since creation) \
+» [C] Relevancy: Gaming Core
+» [D] Discord: amanfire99 / Aman
+» [D] Discord ID: 1323639224762765384
+» [D] Creation Date: 2024-12-31
+» [D] Banner Color: #070196 (deep blue)
+» [D] Clan: NitroNuke (NUKE tag) — Club Nitro server
+» [D] <3 [] Roblox • Telegram
+» [D] Status: Active \
+» [D] Relevancy: Main Discord
+» [E] Passwords Leaked: None Found
+» [E] Others: No confirmed credentials
+» [E] Status: No Breaches Detected \
+» [E] Relevancy: Critical
+» [F] Telegram: @amanfire99 (Aman Kumar)
+» [F] Snapchat: livesofaman
+» [F] Twitch: amanfire99 (ID: 201056230)
+══════════════════════════════════════════════════════════════════════════════════
+                                                                     
+▀████▀  ▀████▀▀                   ▀████▀  ▀████▀▀                    
+  ██      ██                        ██      ██                       
+  ██      ██    ▄██▀██▄▀████████▄   ██      ██    ▄██▀██▄▀████████▄  
+  ██████████   ██▀   ▀██ ██    ██   ██████████   ██▀   ▀██ ██    ██  
+  ██      ██   ██     ██ ██    ██   ██      ██   ██     ██ ██    ██  
+  ██      ██   ██▄   ▄██ ██    ██   ██      ██   ██▄   ▄██ ██    ██  
+▄████▄  ▄████▄▄ ▀█████▀▄████  ████▄████▄  ▄████▄▄ ▀█████▀▄████  ████▄
+                                                                                                                                         
+  [A] Username: hanatsukiii (Hanatsuki)
+» [A] Discord ID: 971771103733239868
+» [A] Legacy Username: Jotaro and Kakyoin ❤#4772
+» [A] Profile: guns.lol/hanatsuki
+» [A] <3 [] Discord • Roblox • Spotify • Twitter
+» [A] Status: Active \
+» [A] Relevancy: Primary
+» [B] Real Name: Marwa
+» [B] Date of Birth: 1990-06-05
+» [B] Pronouns: She/Her/Creature
+» [B] Origin: Tunisia / France
+» [B] Status: Confirmed \
+» [B] Relevancy: Main Identity
+» [C] Roblox: hanatsuki_sacredsoul (ID 2035040778)
+» [C] Creation Date: 2020-11-23
+» [C] Past Username: Elina_636353
+» [C] Server Nickname: SubjectAY500 (Elina_636353)
+» [C] <3 [] Discord
+» [C] Status: Active \
+» [C] Relevancy: Gaming Core
+» [D] Discord Clan: Funky (ᗜˬᗜ) — 168k members
+» [D] Email: hanatsukiii13@hotmail.fr
+» [D] Spotify: Star killer (31lo2b5ytfqlagpxczsigjcb4wpa)
+» [D] <3 [] Roblox • Twitter
+» [D] Status: Active \
+» [D] Relevancy: Main Discord
+» [E] Passwords Leaked: best25302531 (Collection #1/#5)
+» [E] Others: SHA-256 hash (WeHeartIt - hanatsuki)
+» [E] Breaches: Twitter (marwa58841970), MangaFox (chihemek), WeHeartIt
+» [E] IP: 41.227.173.251 (Tunisia)
+» [E] Status: Heavily Compromised \
+» [E] Relevancy: Critical
+» [F] Twitter: @marwa58841970
+» [F] MangaFox: chihemek (DOB 1990-06-05)
+═════════════════════════════════════════════════════════════════════
+           ▄▄                           
+▀████▀     ██                           
+  ██                                    
+  ██     ▀███  ▄█▀██▄ ▀████████▄█████▄  
+  ██       ██ ██   ██   ██    ██    ██  
+  ██     ▄ ██  ▄█████   ██    ██    ██  
+  ██    ▄█ ██ ██   ██   ██    ██    ██  
+██████████████▄████▀██▄████  ████  ████▄
+                                                                               
+  [A] Username: liam070359
+» [A] Discord ID: 1346743453047849020
+» [A] Display Name: Liam
+» [A] Creation Date: 2025-03-05
+» [A] <3 [] Discord • Spotify
+» [A] Status: Active \
+» [A] Relevancy: Primary
+» [B] Real Name: Liam
+» [B] Region: North America
+» [B] Status: Confirmed \
+» [B] Relevancy: Main Identity
+» [C] Spotify: LiamS (jpy9ediibta502cfcke32pwdy)
+» [C] <3 [] Discord
+» [C] Status: Active \
+» [C] Relevancy: Connected Account
+» [D] Discord Clan: HELLDIVERS™ Official Discord [SEAF]
+» [D] Status: Active \
+» [D] Relevancy: Main Discord
+» [E] Passwords Leaked: None Found
+» [E] Breaches: 0 results
+» [E] Stealer Logs: 0 results
+» [E] Status: Clean \
+» [E] Relevancy: Critical527ms
+═══════════════════════════════════
+
+
+     /\
+    //\\      B E E _ T H E G O A T
+   ///\\\ 
+  ////\\\\     B O B B Y
+ ////  \\\\
+////    \\\\
+
+   .-""""""-.
+ .'          '.
+(   B E E     )
+|   T H E     |
+|   G O A T   |
+ '.          .'
+   '-......-'
+
+      ( o.o )
+     >  ^  <   🐝
+    /       \
+   B O B B Y                                                                     
+
+  [A] Username: bee_thegoat
+» [A] Discord ID: 722805371042922497
+» [A] Legacy Username: DanTDM#0953
+» [A] Display Name: Bobby
+» [A] <3 [] Discord • Roblox • Steam • Twitch
+» [A] Status: Active \
+» [A] Relevancy: Primary
+» [B] Real Name: Bruno De Oliveira Mello
+» [B] Location: Rio de Janeiro, RJ, Brazil
+» [B] Business: Gisela Pereira Dos Santos Telecomunicacoes (Fenix Telecom)
+» [B] Address: R Da Inspiracao 312 Loja D, Vila Da Penha, RJ 21221-330
+» [B] Phone: +55 21 96569-0400
+» [B] Status: Confirmed \
+» [B] Relevancy: Main Identity
+» [C] Roblox: BOB123LOL5 (ID 2814083624)
+» [C] Xbox: Bobby8642
+» [C] <3 [] Discord • Steam • Twitch
+» [C] Status: Active \
+» [C] Relevancy: Gaming Core
+» [D] Primary Email: benjamimpmello@gmail.com
+» [D] Alt Emails: bomello@gmail.com • fenix-link@hotmail.com
+» [D] Steam: Bobby-Chan (76561199201794951)
+» [D] Twitch: bobbysmps (ID: 954435719)
+» [D] YouTube: bobbysmp9245
+» [D] Medal.tv: bee_thegoat (ID: 331492564)
+» [D] Status: Active \
+» [D] Relevancy: Main Accounts
+» [E] Passwords Leaked: ben960169402
+» [E] Others: Discord Token (MTI0NzY3NTA2ODgzODk3MzQ4MA.GlxbfE.dcOIGGMQzVySrP4bfI9Vt77ARIqDKDDAIUKKoY)
+» [E] Stealer Log: PICHAUPC • LummaC2 • 2024-12-22
+» [E] IP: 45.235.68.128 (Rio de Janeiro, BR)
+» [E] <3 [] Canva Breach (BrunoDeOliveiraMello)
+» [E] Status: Heavily Compromised \
+» [E] Relevancy: Critical
+» [F] Facebook: 2512783328741400
+» [F] Cross-Reference: 'Day 1 for huge BOB123LOL5'
+                                                                    
+                             *-                                                                     
+                             *-                                                                     
+                            #+=                                                                     
+                            ##%##                                                                   
+                        %%#**#######+*                                                              
+                       %#+==++===##%#+                                                              
+                      ##*==--===-=+=:-+#                                                            
+                     **#*++=+==+==+=+-                                                              
+                     ###*#****++*=+*=+                                                              
+                     #%######+--*++*+#                                                              
+                      ####*+++-=-***                                                                
+                      *%##+------#+#                                                                
+                        %##+++++#*:-=@                                                              
+                        ##%%###*=--::::-                                                            
+                       **####*+=----+=-=+                                                           
+                       #*#+++=====#+=--:*                                                           
+                       #=***-::=::-::-::-                                                           
+                      %*+++:-:--:::-:-::=                                                           
+                      %*++*=-:=-::::--::-                                                           
+                      #*+*+=----:--:-=-::                                                           
+                      #++*+=--==-:::-=::.                                                           
+                     #***#*=--+===------.                                                           
+                     #**##+=====-----===:                                                           
+                     %##%%#***#+++****#-:                                                           
+                     ##%%@@@@@@@%%%%%#%-=#                                                          
+                    #%##@@%%@@@@@@@%%##+==                                                          
+                    %##%@@%%%@@@@@%%%#@*=-                                                          
+                     ###*+++++#%#*+++=-*=+                                                          
+                     ###*--::-+ +--:--:*++                                                          
+                       %*=--::- +------#                                                            
+                        *=---:- +----:#                                                             
+                        #+---:: +-----                                                              
+                         *=-::+ =--::-                                                              
+                         *+-::-#=--:-*                                                              
+                          *+==+ ====*                                                               
+                         **+*+= ***-+                                                               
+                         *+=:-- +=-:=@                                                              
+                         #+-:-- #--::#                                                              
+                         *+-:-- *--::#                                                              
+                         *+=:-- *-::-                                                               
+                          *+--- *::-                                                                
+                           *--- *::=                                                                
+                           #+-*@+::+                                                                
+                           #+=+#+:-=                                                                
+                           #+++%=::-                                                                
+                           **++#-::-                                                                
+                           #**+*-::-    
+          ▄▄    ▄▄                      
+ ▄█▀▀▀█▄█ ██  ▀███ ▀███                 
+▄██    ▀█       ██   ██                 
+▀███▄   ▀███    ██   ██  ▄██▀▀██▀   ▀██▀
+  ▀█████▄ ██    ██   ██ ▄█     ██   ▄█  
+▄     ▀██ ██    ██   ██▄██      ██ ▄█   
+██     ██ ██    ██   ██ ▀██▄     ███    
+█▀█████▀▄████▄▄████▄████▄ ██▄▄   ▄█     
+                               ▄█       
+                             ██▀   
+							 
+  [A] Discord:
+» [A] Username: silkyheinx
+» [A] Display Name: Silky
+» [A] User ID: 1300741684186976308
+» [A] Account Created: 2024-10-29
+» [A] Avatar: https://cdn.discordapp.com/avatars/1300741684186976308/8213f887200a6dfba428e04014d625d7.png
+» [A] Breach Sweep: Clean (No hits)
+
+[A] <3 [] Discord Status: Confirmed & Linked
+
+────────────────────────────────────
+
+[B] Roblox:
+» [B] Username: bumpeaches56
+» [B] Display Name: Jimmeh
+» [B] User ID: 2337711852
+» [B] Account Created: 2021-01-31
+» [B] Bio: Wsg
+» [B] Friends: 46
+» [B] Badges: Friendship, Veteran
+» [B] Breach Sweep: Clean (No hits)
+
+[B] <3 [] Roblox Status: Confirmed & Linked
+
+────────────────────────────────────
+
+[C] Xbox:
+» [C] Gamertag: CH1CKNUGGET1964
+» [C] Breach Sweep: Clean (No hits)
+
+[C] <3 [] Xbox Status: Confirmed & Linked
+
+────────────────────────────────────
+
+**Summary:**
+- All accounts appear **clean** across breach databases.
+- Main gaming identity: **Jimmeh** (Roblox) linked to **silkyheinx** (Discord) and **CH1CKNUGGET1964** (Xbox).
+- Roblox account is older (2021) while Discord is newer (Oct 2024).
+
+           ▄▄    ▄▄   ▄▄                 
+         ▀███  ▀███   ██            ██   
+           ██    ██                 ██   
+  ▄▄█▀██   ██    ██ ▀███   ▄██▀██▄██████ 
+ ▄█▀   ██  ██    ██   ██  ██▀   ▀██ ██   
+ ██▀▀▀▀▀▀  ██    ██   ██  ██     ██ ██   
+ ██▄    ▄  ██    ██   ██  ██▄   ▄██ ██   
+  ▀█████▀▄████▄▄████▄████▄ ▀█████▀  ▀████
+                                         
+                                         
+[A] Discord:
+» [A] Username: elliot.femboi
+» [A] Display Name: elliot
+» [A] User ID: 1353589651998249010
+» [A] Bio: canadian 🇨🇦 | call me eli | gay
+» [A] Badges: HypeSquad Brilliance, ClanQuest Badge
+» [A] Account Created: 2025-03-24 04:42:01 UTC
+
+[A] <3 [] Discord Status: Confirmed
+
+────────────────────────────────────
+
+[B] Roblox:
+» [B] Username: coyboy585
+» [B] User ID: 1531622715
+» [B] Display Name: elliot
+» [B] Joined: 2020-03-27
+» [B] Bio: old account 2017
+» [B] Friends: 256
+» [B] Status: Confirmed & Linked
+
+[B] <3 [] Roblox Status: Active
+
+────────────────────────────────────
+
+[C] PlayStation Network:
+» [C] Username: elliotfrese
+» [C] Status: Confirmed & Linked
+
+[C] Email & Credentials:
+» [C] Email: elliotfrese@voo.be
+» [C] Password: lin16den43 (Plaintext - Cloudata)
+» [C] Breach: HostMonster
+
+[C] IP (HostMonster Breach):
+» [C] 178.162.248.68 → Leaseweb Frankfurt (Hosting Server)
+
+────────────────────────────────────
+
+[D] Steam:
+» [D] Username: elliot
+» [D] Steam ID: 76561199816137289
+» [D] Created: 2024-01-10
+» [D] Location: Canada — Alberta (CA/AB)
+» [D] Status: Confirmed & Linked
+
+[D] TikTok:
+» [D] Username: @elliot.yay
+» [D] Display: elliot 🍁
+» [D] Bio: canadian 🍁
+» [D] Followers: 113
+» [D] Created: 2023-11-11
+» [D] Status: Confirmed & Linked
+
+[D] Spotify:
+» [D] Username: elliot
+» [D] ID: 31izfd777vledr5wn575lzitdlbe
+» [D] Status: Confirmed & Linked
+
+────────────────────────────────────
+
+                                         ▄▄                                                          
+                                       ▀███                                                          
+                                         ██                                                          
+    ▀████████▄ ▄█▀██▄ ▀████████▄    ▄█▀▀███  ▄█▀██▄  ▄█▀█████▄█▀██▄ ▀████████▄█████▄   ▄▄█▀██ ▄██▀███
+      ██   ▀████   ██   ██    ██  ▄██    ██ ██   ██ ▄██  ██ ██   ██   ██    ██    ██  ▄█▀   ████   ▀▀
+      ██    ██ ▄█████   ██    ██  ███    ██  ▄█████ ▀█████▀  ▄█████   ██    ██    ██  ██▀▀▀▀▀▀▀█████▄
+      ██   ▄████   ██   ██    ██  ▀██    ██ ██   ██ ██      ██   ██   ██    ██    ██  ██▄    ▄█▄   ██
+      ██████▀ ▀████▀██▄████  ████▄ ▀████▀███▄████▀██▄███████▀████▀██▄████  ████  ████▄ ▀█████▀██████▀
+      ██                                            █▀     ██                                        
+    ▄████▄                                          ██████▀                                          
+
+[A] Discord:
+» [A] Username: pandagames.s
+» [A] User ID: 1381050472344846339
+» [A] Clan: Rec Military | RP (recmilitary)
+» [A] Status: Confirmed
+
+[A] <3 [] Discord Status: Active
+
+────────────────────────────────────
+
+[B] Real Identity (CRITICAL):
+» [B] Full Name: Pedro Henrique da Costa Saueressig
+» [B] Date of Birth: 2006-12-08 (17-18 years old)
+» [B] Brazilian CPF: 052.964.580-79
+» [B] Mother's Name: Mirian Rejane da Costa Saueressig
+» [B] Home Address: Rua Bugre Lopes, 54 Vila Rica, Santiago, RS, ZIP 97716-061
+» [B] Phone 1: +55 51 996019597 (Life360)
+» [B] Phone 2: +55 51 99972-9832
+
+[B] Emails:
+» [B] pedrosaueressig@gmail.com (Deezer Breach 2022)
+» [B] ke.silva009@gmail.com
+» [B] pedro.saueressig2@gmail.com (Primary / Active)
+
+[B] <3 [] Real Identity: Confirmed + High Exposure
+
+────────────────────────────────────
+
+[C] Gaming Accounts:
+» [C] Steam: Mamba negra (76561198254069617)
+» [C] Riot Games: LimaDDollynho
+» [C] Crossfire: Rodinoli
+» [C] Instagram: @pedro.saueressig
+» [C] Facebook: pedro.saueressig2@gmail.com (ID 258656127898334)
+
+[C] <3 [] Gaming Status: Confirmed & Linked
+
+────────────────────────────────────
+
+[D] Financial & Cloud:
+» [D] Caixa Bank: CPF 052.964.580-79 • PIN 089735
+» [D] MEGA Cloud: pedro.saueressig2@gmail.com / saueressig9690
+» [D] Mercado Livre: pedro.saueressig2@gmail.com
+
+[D] <3 [] Financial Status: Compromised
+
+────────────────────────────────────
+
+[E] Stealer Logs:
+» [E] Stealer #1 (PC): BR[DCDF90F6...] • 2022-09-24 • Porto Alegre, RS
+» [E] Stealer #2 (Android): BROQBY4UL... • 2024-12-04 • Android Chrome 131
+
+[E] <3 [] Stealer Status: Confirmed (Multiple)
+
+────────────────────────────
+
+                                                                                                                             
+ ▄█▀▀▀█▄█                       ▀████▄     ▄███▀                    ▀███▀▀▀███                                               
+▄██    ▀█                         ████    ████                        ██    ▀█                                               
+▀███▄     ▄▄█▀██▀████████▄        █ ██   ▄█ ██  ▄█▀██▄ ▀███▄███       ██   █ ▀███▄███  ▄██▀██▄ ▄█▀█████▄█▀███████▀   ▀██▀    
+  ▀█████▄▄█▀   ██ ██    ██        █  ██  █▀ ██ ██   ██   ██▀ ▀▀       ██▀▀██   ██▀ ▀▀ ██▀   ▀████  ██ ▄██  ██   ██   ▄█      
+▄     ▀████▀▀▀▀▀▀ ██    ██        █  ██▄█▀  ██  ▄█████   ██           ██   █   ██     ██     ███████▀ ▀█████▀    ██ ▄█       
+██     ████▄    ▄ ██    ██ ▄▄     █  ▀██▀   ██ ██   ██   ██    ▄▄     ██       ██     ██▄   ▄███      ██          ███        
+█▀█████▀  ▀█████▀████  ████▄█   ▄███▄ ▀▀  ▄████▄████▀██▄████▄  ██   ▄████▄   ▄████▄    ▀█████▀ ███████ ███████    ▄█         
+                                                                                              █▀     ██▀     ██ ▄█           
+                                                                                              ██████▀ ██████▀ ██▀            
+
+[A] Discord:
+» [A] Username: xxfroggy99
+» [A] Display Name: ☆Froggy☆
+» [A] User ID: 1317512814214250567
+» [A] Account Created: 2024-12-14
+» [A] Avatar: https://cdn.discordapp.com/avatars/1317512814214250567/2a91cc649bf1f1052d753fbb450460b1.png
+» [A] Clan: Rec Military | RP [RM] (Server ID: 704663592309620749)
+
+[A] <3 [] Discord Status: Confirmed
+
+────────────────────────────────────
+
+[B] TikTok:
+» [B] Username: @xxfroggy99 / XxFroggy99
+» [B] Account Created: 2024-12-25 (11 days after Discord)
+» [B] Region: United Kingdom (GB)
+» [B] Status: Private (3 followers, 19 following, 0 videos)
+» [B] Breach/Stealer: Clean (No hits)
+
+[B] <3 [] TikTok Status: Confirmed & Cross-Platform Linked
+
+────────────────────────────────────
+
+[C] Gaming:
+» [C] Game: Rec Room (Military Roleplay)
+» [C] Clan/Server: Rec Military | RP ([RM])
+   • Server Size: 20,923 members (1,170 online)
+   • Traits: Military Roleplay, United Empire
+
+[C] Roblox: No linked account found
+
+[C] <3 [] Gaming Status: Active in Rec Room Military RP
+
+────────────────────────────────────
+
+                                                                                                      ▄▄▄▄                        ▄▄                    ▄▄             
+▀████▀  ▀████▀▀                                                     ▀████▀ ▄▄█▀▀▀█▄█     ▄▄█▀▀██▄   ▄█▀ ▀▀         ██           ▀███                    ██             
+  ██      ██                                                          ██ ▄██▀     ▀█   ▄██▀    ▀██▄ ██▀           ▄██▄            ██                                   
+  ██      ██    ▄▄█▀██ ▄█▀██▄ ▀██▀   ▀██▀▀██▀   ▀██▀         ██▀▀█▄   ██ ██▀       ▀   ██▀      ▀███████         ▄█▀██▄      ▄█▀▀███ ▀████████▄█████▄ ▀███ ▀████████▄  
+  ██████████   ▄█▀   ███   ██   ██   ▄█    ██   ▄█          ███  ▀██  ██ ██            ██        ██ ██          ▄█  ▀██    ▄██    ██   ██    ██    ██   ██   ██    ██  
+  ██      ██   ██▀▀▀▀▀▀▄█████    ██ ▄█      ██ ▄█                ▄██  ██ ██▄           ██▄      ▄██ ██          ████████   ███    ██   ██    ██    ██   ██   ██    ██  
+  ██      ██   ██▄    ▄█   ██     ███        ███               ▀▀██▄  ██ ▀██▄     ▄▀   ▀██▄    ▄██▀ ██         █▀      ██  ▀██    ██   ██    ██    ██   ██   ██    ██  
+▄████▄  ▄████▄▄ ▀█████▀████▀██▄    █         ▄█                   ██▄████▄ ▀▀█████▀      ▀▀████▀▀ ▄████▄     ▄███▄   ▄████▄ ▀████▀███▄████  ████  ████▄████▄████  ████▄
+                                           ▄█              ███  ▄█▀                                                                                                    
+                                         ██▀                █████▀                                                                                                     
+
+[A] Discord:
+» [A] Username: beef2858
+» [A] Display Name: Heavy
+» [A] User ID: 725478168030609499
+» [A] Bio: Canadian 🇨🇦 · Speaks French and English
+» [A] Account Created: 2020-06-24
+» [A] Breach Search: Clean (0 results)
+
+[A] <3 [] Discord Status: Confirmed
+
+────────────────────────────────────
+
+[B] Xbox:
+» [B] Gamertag: Blue2221
+» [B] Xbox ID: 3070333353470370
+» [B] Status: Confirmed & Linked
+
+[B] Stealer / Breach Notes (Blue2221):
+» [B] Old stealer hit (2021) → Rejected (Indonesian machine, different person)
+» [B] Multiple breach entries → Mostly rejected/false positives (Israel, Brazil, etc.)
+
+[B] <3 [] Xbox Status: Linked but low risk
+
+────────────────────────────────────
+
+[C] Spotify:
+» [C] Display Name: Heavy
+» [C] ID: 31zcjysk6ip7dv3dkerdedulojma
+» [C] Status: Confirmed & Linked
+
+[C] <3 [] Spotify Status: Confirmed
+
+────────────────────────────────────
+
+[D] Servers & Communities:
+» [D] Cyberpunk 2077 Official (Tag: 2077)
+» [D] Official Minecraft (4.15M members)
+» [D] HELLDIVERS™ Official (1.29M members) — North America role
+» [D] Other Discord servers joined
+
+[D] <3 [] Community Status: Active
+
+────────────────────────────────────
+ ▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄  ▄▄   ▄▄ ▄▄▄        ▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄ ▄▄▄▄▄▄   
+█      █  ▄    █      ██  █ █  █   █      █      █       █       █      █   ▄  █  
+█  ▄   █ █▄█   █  ▄    █  █ █  █   █      █  ▄   █▄     ▄█▄     ▄█  ▄   █  █ █ █  
+█ █▄█  █       █ █ █   █  █▄█  █   █      █ █▄█  █ █   █   █   █ █ █▄█  █   █▄▄█▄ 
+█      █  ▄   ██ █▄█   █       █   █▄▄▄   █      █ █   █   █   █ █      █    ▄▄  █
+█  ▄   █ █▄█   █       █       █       █  █  ▄   █ █   █   █   █ █  ▄   █   █  █ █
+█▄█ █▄▄█▄▄▄▄▄▄▄█▄▄▄▄▄▄██▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█  █▄█ █▄▄█ █▄▄▄█   █▄▄▄█ █▄█ █▄▄█▄▄▄█  █▄█
+
+   [A] Discord:
+» [A] Username: abdul_attar
+» [A] Display Name: Abdul_attar
+» [A] User ID: 704458679256350800
+» [A] Bio: N/A
+» [A] Badges: HypeSquad Balance
+» [A] Account Created: 2020-04-27 22:27:17 UTC
+
+[A] <3 [] Discord Status: Confirmed
+
+────────────────────────────────────
+
+[B] Discord Alt / Other:
+» [B] Username: deleted_user_9d1c594e68b5
+» [B] User ID: 419506727617298442
+» [B] Badges: HypeSquad Brilliance
+» [B] Account Created: 2018-03-03 14:49:57 UTC
+
+[B] <3 [] Discord Status: Confirmed
+
+────────────────────────────────────
+
+[C] Roblox:
+» [C] Username: abdul_attar
+» [C] User ID: 497430132
+» [C] Display Name: abdul_attar
+» [C] Joined: 2018-01-22
+» [C] Friends: 126
+» [C] Badges: Friendship, Veteran
+» [C] Status: Active
+
+────────────────────────────────────
+
+[D] Other Platforms (Linked Accounts):
+» BandLab: abdul_attar (Abdulrahim Attar)
+» Chess.com: abdul_attar
+» Fortnite Tracker: abdul_attar (36 wins, 1265 kills)
+» Rec Room: Abdul_attar
+» Steam: Abdul_attar
+» Twitch: abdul_attar
+» YouTube: UCpnbio2xBG1bgo8KW-v_MvA
+
+────────────────────────────────────
+╠══╦══════════════╦══╦═══════════════════════════════════════════════════════════════════╣
+║░░║  CREDITS     ║ +║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    CREDITS  ║
+╠══╩══════════════╩══╩═══════════════════════════════════════════════════════════════════╣
+
+                                                                                                                  
+                                                                   We would like to thank you for boarding onto $yNcE Airlines.                                                                                                                                                
+            ______                                                                                                                                 
+            _\ _~-\___                                                                                                    
+    =  = ==(___$ynce__)                                                                                                                         
+                \_____\___________________,-~~~~~~~`-.._                              Captain: Coco                                               
+                /     o O o o o o O O o o o o o o O o  |\_                            Co-Captain: Zay                               
+                `~-.__        ___..----..                  )                          Flight Engineer: Xry                
+                      `---~~\___________/------------`````                            Sexy Stewardess: Niko                                                                      
+                      =  ===(_________D
+╠══╦══════════════╦══╦═══════════════════════════════════════════════════════════════════╣
+║░░║  $ynce     ║ +║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   Rec Military. ║
+╠══╩══════════════╩══╩═══════════════════════════════════════════════════════════════════╣					  
+                                                                                                              
+                                                                                                                
+                                                                                                                                                                          
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // === RED FALLING DOS SNOW ===
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const characters = ['●', '■', '◆', '0', '1', '▓', '▒', '█', '•', '◉', '▮'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 8 + 4;
+                this.speed = Math.random() * 3.5 + 1.8;
+                this.char = characters[Math.floor(Math.random() * characters.length)];
+                this.opacity = Math.random() * 0.7 + 0.4;
+                this.angle = Math.random() * 360;
+                this.wobble = Math.random() * 0.6 + 0.4;
+            }
+            update() {
+                this.y += this.speed;
+                this.angle += 1.2;
+                this.x += Math.sin(this.angle * 0.04) * this.wobble;
+                if (this.y > canvas.height + 30) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = '#ff4444';
+                ctx.shadowColor = '#ff0000';
+                ctx.shadowBlur = 15;
+                ctx.font = `${this.size}px Courier New`;
+                ctx.fillText(this.char, this.x, this.y);
+                ctx.restore();
+            }
+        }
+
+        function initParticles(count) {
+            particles = [];
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.18)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        initParticles(220);
+        animate();
+    </script>
+</body>
+</html>

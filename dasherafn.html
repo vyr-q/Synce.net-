@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$ynce</title>
+    <style>
+
+        .text-box.fullscreen{
+    position: fixed !important;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+
+    z-index: 999999;
+
+    margin: 0;
+    padding: 45px;
+
+    border-radius: 0;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(255,0,0,0.08),
+            transparent 35%
+        ),
+        rgba(5,5,5,0.985);
+
+    border: none;
+
+    overflow-y: auto;
+    box-sizing: border-box;
+
+    color: #ffdddd;
+
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+        inset 0 0 80px rgba(255,255,255,0.03),
+        inset 0 0 160px rgba(255,0,0,0.05),
+        0 0 80px rgba(255,0,0,0.12);
+
+    animation: fullscreenFade .25s ease;
+}
+
+/* Smooth entrance */
+@keyframes fullscreenFade{
+    from{
+        opacity:0;
+        transform:scale(0.985);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+/* Better scrollbar */
+.text-box.fullscreen::-webkit-scrollbar{
+    width:10px;
+}
+
+.text-box.fullscreen::-webkit-scrollbar-track{
+    background:#111;
+}
+
+.text-box.fullscreen::-webkit-scrollbar-thumb{
+    background:linear-gradient(
+        to bottom,
+        #ff4444,
+        #991111
+    );
+
+    border-radius:12px;
+
+    box-shadow:
+        0 0 12px rgba(255,0,0,0.35);
+}
+
+/* Fullscreen text glow */
+.text-box.fullscreen h2,
+.text-box.fullscreen pre{
+    text-shadow:
+        0 0 6px rgba(255,0,0,0.15);
+}
+
+* {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background: #0a0a0a;
+        color: white;
+        font-family: 'Courier New', monospace;
+        overflow: hidden;
+        height: 100vh;
+        position: relative;
+    }
+
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        box-shadow: inset 0 0 80px rgba(255,255,255,0.15),
+                    inset 0 0 160px rgba(255,255,255,0.08);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    canvas {
+        position: absolute;
+        top: 0; left: 0;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .content {
+        position: relative;
+        z-index: 3;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-top: 60px;
+    }
+
+    h1 {
+        font-size: 62px;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 8px;
+        text-shadow: 0 0 20px #ffffff,
+                     0 0 40px #ffffff,
+                     0 0 60px #ff3333;
+    }
+
+    /* IMPROVED TEXT BOX - Better for ASCII & pasted text */
+    .text-box {
+        width: 780px;                    /* Slightly wider for your ASCII */
+        max-height: 55vh;
+        background: rgba(0, 0, 0, 0.8);
+        border: 2px solid #ff3333;
+        box-shadow: 0 0 30px #ff3333,
+                    0 0 60px rgba(255, 50, 50, 0.4);
+        padding: 25px;
+        overflow-y: auto;
+        text-align: left;
+        line-height: 1.55;
+        font-size: 15px;
+        color: #ffdddd;
+        scrollbar-width: thin;
+        scrollbar-color: #ff4444 #222;
+        white-space: pre-wrap;           /* Important */
+        word-break: break-all;
+        font-family: 'Courier New', monospace;
+    }
+
+    .text-box::-webkit-scrollbar {
+        width: 8px;
+    }
+    .text-box::-webkit-scrollbar-thumb {
+        background: #ff4444;
+        border-radius: 10px;
+    }
+</style>
+	
+</head>
+<body>
+
+    <!-- Red Falling DOS Snow -->
+    <canvas id="snowCanvas"></canvas>
+
+    <div class="content">
+        <h1>$YNCE</h1>
+
+        <audio id="bgMusic" autoplay loop>
+        <source src="https://codehs.com/uploads/293983992668e12acaf090a8ad1e0e5e" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+
+
+
+        <!-- SCROLLABLE TEXT BOX -->
+        <div class="text-box">
+            <h2>Dashers little dox ":\</h2>
+            <button id="fullscreenBtn">⛶ Fullscreen</button>
+      <pre>
+                +;X
+                 +;:::::;;;+
+                ;;;;;:;;:::;;+
+               +;;;;+;;;;:::;;+
+              x++++x+;;;;+;;;;;x$
+              +++x&++++++;;;;;++
+             X+++&X+++xx+++++++x
+             +++x$x+++xx+x++x+xX
+            +x+xx$xx++XxxxxxXxX
+          Xx xxxX$xxxxXXXXX$&$ 
+         x  XxxXXXXxXxxXXX$$X
+       xX   XxxxxXXxXX$$$&X$
+     $$    +xxxxxxXXX$$&$Xx     COCO
+    &    x+XxxxxxxxxxxxxXxxx 
+   $    ++xxxxxXXxxxxxxXX&$X$        XYRAHA
+  x   +++XXxxxXXxxxxXXX$X$$$$  
+ xX ++++XXxxXxxxxxxXX$$XX$&&$                ZAY
+  x++++XXXXXxxXXXXXX$$XXXX&  
+  ++++xXxXxxxxXXXX$$XxXxxxx 
+ +++xxXXxX$$X$$$$$x++xxxxxxx   
+ +++xx+Xx$$XXxXXx++++xxxxxXxX
+ +++xx$xX$xx+xXXx+++xxxxx+xX
+ +++xxXXxx++xXxx+++x+x+xxxxX
+   xxxxxx+++Xxx++++++++x+xxXX
+   xxxx++++xxx++++++++++++xXXX
+  xx++++++xxx+++++++++++++xXXxX 
+ xx+++++++xx+++++++++++++++xxXxx$ 
+xxx++++++++++++++++++++++x+xx$Xxx
+xx+++++++++x+++++++++++++x++xX$xxX
+x+++++++++++x++x+++++++++x+++x$XxxX
+++++++++++xx+++x++++++++++++xxX$XX
+ xx+++++++xx++++++++++++++++xxx$
+    x++++xxx++++++++++++++x+xxx$
+        ++xx+++++++++x++++x+xXX
+           $x+++++++++++xxxx$
+          &&&$$ $$$XXXX
+          $$$$&  $&&&
+          $$$$   &&&&
+          $$$$   $$$
+          $$$$   $$$
+          XXX   $$$$
+          XXX   $XxXX
+         $XXxxX  $XxxX
+          XxxxxX  XXxXX
+            XxxxXX Xx$$
+              XX$$$ 
+
+
+Greetings Doxxers!
+
+Dasher. He is known for frequently claiming he can "swat" and "dox" people while simply using ratted GitHub tools
+and pre-made Discord nukers that he did not code himself. He has been described as openly racist and has reportedly done a Nazi sign in front of a 5-year-old child.
+ 
+
+Vyrq has previously sent pizza to his house as a form of trolling / swatting retaliation.
+
+		
+╠══╦══════════════╦══╦═══════════════════════════════════════════════════════════════════╣
+║░░║  Information ║+ ║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░         ║
+╠══╩══════════════╩══╩═══════════════════════════════════════════════════════════════════╣
+
+                                      │
+                                      │ └── $ynce
+                                      │     └── 35363 Fleetwood Dr, Slidell LA 70460 
+                                      │
+                                      │ └── Address Owner
+                                      │     └── Gary Behrens / Gary K. Behrens
+                                      │         └── Age: 66
+                                      │         └── Target Number: (985) 502-0691
+                                      │
+                                      │ └── Previous Addresses
+                                      │     └── 35355 Fleetwood Dr, Slidell, LA 70460 (July 2013)
+                                      │     └── 21 Flamingo St, New Orleans, LA 70124 (January 2013)
+                                      │     └── 250 Brownswitch Rd Unit 151, Slidell, LA 70458 (April 1989)
+                                      │     └── PO Box 1368, Slidell, LA 70459 (September 1986)
+                                      │     └── 300 Marsh St, Glenwood, MN 56334 (January 1998)
+                                      │     └── 1530 Appleton Ave NW, Buffalo, MN 55313 (May 1994)
+                                      │
+                                      │ └── Businesses
+                                      │     └── G B I SERVICES LLC
+                                      │         └── Address: 35363 Fleetwood Dr, Slidell, LA 70460
+                                      │         └── Role: Manager & Agent
+                                      │         └── Since: April 2013
+                                      │
+                                      │ └── Property Details
+                                      │     └── Living Area: 960 sq ft
+                                      │     └── Lot Size: 10,638 sq ft
+                                      │     └── Built: 2013
+                                      │     └── APN: 103786
+                                      │     └── County: St. Tammany Parish
+                                      │     └── Coordinates: -89.81014 / 30.304947
+                                      │
+                                      │ └── Primary Resident
+                                      │     └── Gary K. Behrens
+                                      │         └── Gender: Male
+                                      │         └── DOB: 1959-08-03 (Age: 66)
+                                      │         └── Email: garybehrens@yahoo.com
+                                      │         └── Phone: (985) 502-0691
+                                      │         └── SSN: 470-78-5353
+                                      │         └── IP: 68.114.120.88
+                                      │         └── Employer: National Staffing Solutions (CWI)
+                                      │
+                                      │ └── Co-Resident
+                                      │     └── Pamela A. Behrens
+                                      │         └── Gender: Female
+                                      │         └── DOB: ~May 1952 (Age ~73)
+                                      │         └── Email: pabehrens@charter.net
+                                      │         └── Secondary Email: jdie02@aol.com
+                                      │         └── Phone: (985) 641-9495
+                                      │
+                                      │ └── Dasher
+                                      │     └── Dasher (Possible Last Name: Aucoin)
+                                      │         └── Age: 10-14
+                                      │         └── Phone: 9852859685 (Confirmed Active)
+                                      │         └── Email: dasher640@gmail.com (Spotify & Twitter)
+                                      │         └── Discord: 985._. (ID: 1365913562999947356)
+                                      │         └── Roblox: roonatunanme
+                                      │         └── TikTok: manudaaher
+                                      │         └── Steam: Daaher
+                                      │         └── Xbox: manudaaher
+                                      │         └── RecRoom: definitely.dasher
+                                      │
+                                      │ └── Relatives
+                                      │     └── Behrens Family: Catherine (67), Pam (73)
+                                      │     └── Anderson Family: Charles (52), Glenn (99), Kevin (68), Martha (93), and many others
+                                      │
+                                      │ └── Breaches & Credentials
+                                      │     └── eye4fraud.com, MGM Resorts, Exactis, BloomsToday, MySpace, Zynga, Romwe
+                                      │     └── Gary Passwords: 469068947196540, accinelli1
+                                      │     └── Pamela Password: bear01
+                                      │     └── Sydney Patterson Password Hash: 1a93fd46623f98f955b03680573167b5
+                                      │
+                                      │ └── CRITICAL
+                                      │     └── SSN: 470-78-5353 (Gary K. Behrens)
+ 
+╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+║																	[  $ynce  ]	                                                                  ║
+║                                                                   [ Credits ]                                                                   ║
+║																		                                                                          ║
+║																		                                                                          ║
+║			                          	                   coco	       zay        xry                                                             ║
+║                                                         /^--^\     /^--^\     /^--^\								                              ║
+║                                                         \____/     \____/     \____/								                              ║
+║                                                        /      \   /      \   /      \								                              ║
+║                                                       |        | |        | |        |							                              ║
+║                                                        \__  __/   \__  __/   \__  __/								                              ║
+║                                   |^|^|^|^|^|^|^|^|^|^|^|^\ \^|^|^|^/ /^|^|^|^|^\ \^|^|^|^|^|^|^|^|^|^|^|^|					                  ║
+║                                   | | | | | | | | | | | | |\ \| | |/ /| | | | | |\ \| | | | | | | | | | | |					                  ║
+║                                   ########################/ /######\ \###########/ /#######################				                      ║
+║                                   | | | | | | | | | | | | \/| | | | \/| | | | | |\/ | | | | | | | | | | | |					                  ║
+║                                   |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|					                  ║								                                                              
+║								        +									                                                                      ║
+║						  coco >   https://guns.lol/ayti						                                                                  ║
+║						  zay  >   https://guns.lol/Vyrq                                                                                          ║
+║						  xry  >   https://doxbin.com/user/CatToken                                                                               ║
+╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+   Calm little info drop, 
+   
+                       $ynce   ,   CatToken    
+
+</pre>
+</div>
+
+    <script>
+        // === RED FALLING DOS SNOW ===
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const characters = ['●', '■', '◆', '0', '1', '▓', '▒', '█', '•', '◉', '▮'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+const textBox = document.querySelector('.text-box');
+
+fullscreenBtn.addEventListener('click', () => {
+
+    textBox.classList.toggle('fullscreen');
+
+    if (textBox.classList.contains('fullscreen')) {
+
+        document.body.style.overflow = 'hidden';
+        fullscreenBtn.innerHTML = '✕ Exit Fullscreen';
+
+    } else {
+
+        document.body.style.overflow = 'hidden';
+        fullscreenBtn.innerHTML = '⛶ Fullscreen';
+
+    }
+
+});
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 8 + 4;
+                this.speed = Math.random() * 3.5 + 1.8;
+                this.char = characters[Math.floor(Math.random() * characters.length)];
+                this.opacity = Math.random() * 0.7 + 0.4;
+                this.angle = Math.random() * 360;
+                this.wobble = Math.random() * 0.6 + 0.4;
+            }
+            update() {
+                this.y += this.speed;
+                this.angle += 1.2;
+                this.x += Math.sin(this.angle * 0.04) * this.wobble;
+                if (this.y > canvas.height + 30) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = '#ff4444';
+                ctx.shadowColor = '#ff0000';
+                ctx.shadowBlur = 15;
+                ctx.font = `${this.size}px Courier New`;
+                ctx.fillText(this.char, this.x, this.y);
+                ctx.restore();
+            }
+        }
+
+        function initParticles(count) {
+            particles = [];
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.18)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        initParticles(220);
+        animate();
+    </script>
+</body>
+</html>
