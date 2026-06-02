@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Windows 11 Simulator</title>
+<title>$ynce</title>
 <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; user-select:none; }
@@ -124,7 +124,7 @@
   <div class="desktop-icons">
     <div class="d-icon" ondblclick="openWindow('explorer')">
       <div class="fe-icon">📁</div>
-      <span>File Explorer</span>
+      <span>Doxuments</span>
     </div>
     <div class="d-icon" ondblclick="openPfp('coco')">
       <div class="pfp-desk-icon"><img id="coco-desk-img" src="" alt="coco"></div>
@@ -140,7 +140,7 @@
   <div class="win" id="win-explorer" style="width:700px;height:440px;top:60px;left:160px;">
     <div class="win-title" onmousedown="startDrag(event,'win-explorer')">
       <span class="win-title-icon">📁</span>
-      <span class="win-title-text" id="explorer-title">File Explorer</span>
+      <span class="win-title-text" id="explorer-title">Doxuments</span>
       <div class="win-controls">
         <div class="wc" onclick="minimizeWin('win-explorer')">&#x2500;</div>
         <div class="wc" onclick="maximizeWin('win-explorer')">&#x25A1;</div>
@@ -225,7 +225,7 @@
     </div>
     <div class="tb-icon" onclick="toggleStart()" title="Search">&#x1F50D;</div>
     <div class="tb-icon" title="Task View">&#x29C9;</div>
-    <div class="tb-icon" id="tb-explorer" onclick="openWindow('explorer')" title="File Explorer">&#x1F4C1;</div>
+    <div class="tb-icon" id="tb-explorer" onclick="openWindow('explorer')" title="Doxuments">&#x1F4C1;</div>
     <div class="tb-icon" onclick="showToast('Microsoft Edge','Opening browser...')" title="Edge">&#x1F310;</div>
     <div class="tb-icon" onclick="showToast('Settings','Windows Settings')" title="Settings">&#x2699;</div>
     <div class="tb-icon" onclick="showToast('Mail','No new messages')" title="Mail">&#x2709;</div>
@@ -338,7 +338,7 @@ function renderFiles(folder) {
   currentFolder = folder;
   const items = FS[folder] || [];
   document.getElementById('fe-addr').value = 'This PC > ' + folder;
-  document.getElementById('explorer-title').textContent = folder + ' \u2014 File Explorer';
+  document.getElementById('explorer-title').textContent = folder + ' \u2014 Doxuments';
   const grid = document.getElementById('fe-files');
   grid.innerHTML = '';
   items.forEach(item => {
