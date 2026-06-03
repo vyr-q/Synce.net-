@@ -121,21 +121,48 @@
 <body>
 <div id="desktop">
 
-  <div class="desktop-icons">
-    <div class="d-icon" ondblclick="openWindow('explorer')">
-      <div class="fe-icon">📁</div>
-      <span>Doxuments</span>
-    </div>
-    <div class="d-icon" ondblclick="openPfp('coco')">
-      <div class="pfp-desk-icon"><img id="coco-desk-img" src="" alt="coco"></div>
-      <span>coco</span>
-    </div>
-    <div class="d-icon" ondblclick="openPfp('vyrq')">
-      <div class="pfp-desk-icon"><img id="vyrq-desk-img" src="" alt="vyrq"></div>
-      <span>vyrq</span>
-    </div>
+ <div class="desktop-icons">
+  <div class="d-icon" ondblclick="openWindow('explorer')">
+    <div class="fe-icon">📁</div>
+    <span>Doxuments</span>
   </div>
 
+  <!-- Coco Icon -->
+  <div class="d-icon" onclick="openLink('coco')">
+    <div class="pfp-desk-icon">
+      <img id="coco-desk-img" src="" alt="coco">
+    </div>
+    <span>coco</span>
+    <span>(founder)</span>
+  </div>
+
+  <!-- Vyrq Icon -->
+  <div class="d-icon" onclick="openLink('vyrq')">
+    <div class="pfp-desk-icon">
+      <img id="vyrq-desk-img" src="" alt="vyrq">
+    </div>
+    <span>vyrq</span>
+    <span>(cofounder)</span>
+  </div>
+</div>
+
+<script>
+// Function to open custom links on click
+function openLink(person) {
+  let url = '';
+
+  if (person === 'coco') {
+    url = 'https://doxi.ng/coco';        // ← Change to Coco's link
+  } 
+  else if (person === 'vyrq') {
+    url = 'https://guns.lol/vyrq';        // ← Change to Vyrq's link
+  }
+
+  if (url) {
+    window.open(url, '_blank');   // Opens in new tab
+  }
+}
+</script>
   <!-- FILE EXPLORER -->
   <div class="win" id="win-explorer" style="width:700px;height:440px;top:60px;left:160px;">
     <div class="win-title" onmousedown="startDrag(event,'win-explorer')">
